@@ -1,0 +1,91 @@
+<html>
+<head>
+
+    <title>Live Matches</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+
+
+</head>
+
+<nav>
+    <h3>Cricket Score</h3>
+</nav>
+<body>
+    <div>
+        
+                    <table id="allMatches" class="display">
+                    </table>            
+
+        
+    </div>
+
+</body>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  
+  <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script>
+    
+    var all_live_matches_url ="https://rest.entitysport.com/v2/matches/?status=3&token=ec471071441bb2ac538a0ff901abd249&per_page=100&paged=1" 
+
+
+    $(document).ready( function () {
+       
+            $.ajax({
+
+                'url':all_live_matches_url,
+                'dataSrc' : "",
+
+                'contentType': 'application/x-www-form-urlencoded' ,               
+              
+
+                'success':function(data){
+                    var response = data.response
+                    var items = response.items
+                    console.log(items)
+                    var table = $('#allMatches').DataTable( {
+
+                                "data": items,
+                                "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+
+                                            $('td:eq(0)', nRow).html(aData['match_id']);
+                                            $('td:eq(1)', nRow).html(aData['title']);   
+                                            $('td:eq(2)', nRow).html(aData['live']);   
+                                            $('td:eq(3)', nRow).html(aData['game_state_str']);   
+                                            $('td:eq(4)', nRow).html(aData['date_start']);     
+
+
+
+
+                                    return nRow;
+                                    //id=id+1;
+                                },                                
+
+                                'columns':[
+                                {title:'Match ID'},
+                                {title:'Match name'},
+                                {title:'Status'},
+                                {title:'Status Note'},
+                                {title:'Start Date'},
+                                    ] ,
+
+                                'mDataProp':""                                  
+
+                    });
+                
+                },
+
+
+
+            })
+    })
+
+
+
+
+  </script>
+
+
+
+</html>
